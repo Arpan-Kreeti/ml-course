@@ -14,6 +14,13 @@ costFunction  <- function(X, y) {
     # Instructions: Compute the cost of a particular choice of theta.
     #               You should set J to the cost.
 
+    z = X %*% theta
+    
+    h = sigmoid(z)
+    
+    J = (1/m) * ( (-t(y) * log(h)) - t(1-y) %*% log(1-h));
+    
+    
     J
     # ----------------------------------------------------
   }
@@ -35,6 +42,11 @@ grad <- function(X, y) {
     # Note: grad should have the same dimensions as theta
     #
     
+    z = X %*% theta
+    
+    h = sigmoid(z) # g(theta'X)
+    
+    grad = (1/m)*( t(h - y) %*% X );
     
     grad
     # ----------------------------------------------------

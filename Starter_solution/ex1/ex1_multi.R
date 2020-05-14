@@ -179,7 +179,8 @@ print(theta)
 # Estimate the price of a 1650 sq-ft, 3 br house
 # ---------------------- YOUR CODE HERE ----------------------
 
-
+price <- c(1, 1650, 3) %*% theta
 # ------------------------------------------------------------
 
 cat(sprintf('Predicted price of a 1650 sq-ft, 3 br house (using normal equations):\n $%f\n', price))
+

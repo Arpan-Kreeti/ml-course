@@ -115,32 +115,34 @@ for (i in 1:length(theta0_vals)) {
 
 #interactive 3D plot
 #install.packages("rgl")
-library(rgl) 
-open3d()
 
-nbcol = 100
-color = rev(rainbow(nbcol, start = 0/6, end = 4/6))
-J_vals_col  = cut(J_vals, nbcol)
 
-persp3d(theta0_vals, theta1_vals, J_vals,col = color[J_vals_col],
-        xlab=expression(theta_0),ylab=expression(theta_1),
-        zlab="Cost",main = "Gradient Descent")
-points3d(theta_history[, 1], theta_history[, 2], J_history+10, 
-         col="red",size=3.5)
-lines3d(theta_history[, 1], theta_history[, 2], J_history+10, col="red")
+#library(rgl) 
+#open3d()
+
+#nbcol = 100
+#color = rev(rainbow(nbcol, start = 0/6, end = 4/6))
+#J_vals_col  = cut(J_vals, nbcol)
+
+#persp3d(theta0_vals, theta1_vals, J_vals,col = color[J_vals_col],
+#        xlab=expression(theta_0),ylab=expression(theta_1),
+#        zlab="Cost",main = "Gradient Descent")
+#points3d(theta_history[, 1], theta_history[, 2], J_history+10, 
+#         col="red",size=3.5)
+#lines3d(theta_history[, 1], theta_history[, 2], J_history+10, col="red")
 
 # Contour plot
 # Plot J_vals as 20 contours spaced logarithmically between 0.01 and 100
 # logarithmic contours are denser near the center
-logspace <- function( d1, d2, n) 
-            return(exp(log(10)*seq(d1, d2, length.out=n)))
+#logspace <- function( d1, d2, n) 
+#            return(exp(log(10)*seq(d1, d2, length.out=n)))
             #or return(10^seq(d1, d2, length.out=n))
 
-contour(theta0_vals, theta1_vals, J_vals, levels = logspace(-2, 3, 20), 
-        xlab=expression(theta_0),
-        ylab=expression(theta_1),
-        drawlabels = FALSE)
+#contour(theta0_vals, theta1_vals, J_vals, levels = logspace(-2, 3, 20), 
+ #       xlab=expression(theta_0),
+  #      ylab=expression(theta_1),
+   #     drawlabels = FALSE)
 
-points(theta[1], theta[2], pch=4, cex=2,col="red",lwd=2)
-points(theta_history[, 1], theta_history[, 2], col="red",cex=.2,lwd=1,pch=19)
-lines(theta_history[, 1], theta_history[, 2], col="red")
+#points(theta[1], theta[2], pch=4, cex=2,col="red",lwd=2)
+#points(theta_history[, 1], theta_history[, 2], col="red",cex=.2,lwd=1,pch=19)
+#lines(theta_history[, 1], theta_history[, 2], col="red")

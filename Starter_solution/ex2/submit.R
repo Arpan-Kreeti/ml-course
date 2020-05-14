@@ -1,30 +1,29 @@
 submit = function(){
-  source("lib/submitWithConfiguration.r")
+  source("lib/submitWithConfiguration.R")
 
   conf <- list()
   conf$assignmentSlug = 'logistic-regression';
   conf$itemName = 'Logistic Regression';
   conf$partArrays =  c(
     '1', 
-    'sigmoid.r' , 
+    'sigmoid.R' , 
     'Sigmoid Function', 
     '2', 
-    'costFunction.r' , 
+    'costFunction.R' , 
     'Logistic Regression Cost', 
     '3', 
-    'costFunction.r' , 
+    'costFunction.R' , 
     'Logistic Regression Gradient', 
     '4', 
-    'predict.r' , 
+    'predict.R' , 
     'Predict', 
     '5', 
-    'costFunctionReg.r' , 
+    'costFunctionReg.R' , 
     'Regularized Logistic Regression Cost',      
     '6', 
-    'costFunctionReg.r' , 
+    'costFunctionReg.R' , 
     'Regularized Logistic Regression Gradient')
   
-  conf$partArrays = matrix(conf$partArrays, ncol =  3 , byrow = T)
   
   conf$output = output;
 
@@ -33,9 +32,9 @@ submit = function(){
 
 output = function(partId, auxstring) {
   source("sigmoid.R")
-  source("costFunction.r")
-  source("predict.r")
-  source("costFunctionReg.r")
+  source("costFunction.R")
+  source("predict.R")
+  source("costFunctionReg.R")
   # Random Test Cases
   X = cbind(rep(1,20), exp(1) * sin(seq(1,20,1)), exp(0.5) * cos(seq(1,20,1))  )
   y = (sin(X[,1]+X[,2]) > 0)
