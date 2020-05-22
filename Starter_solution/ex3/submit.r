@@ -1,59 +1,90 @@
-submit = function(){
-  source("lib/submitWithConfiguration.r")
-
-  conf = list()
+lrCostFunction <- function(X, y, lambda) {
+  #lrCostFunction Compute cost for logistic regression with
+  #regularization
+  #   J <- lrCostFunction(X, y, lambda)(theta) computes the cost of using
+  #   theta as the parameter for regularized logistic regression.
   
-  conf$assignmentSlug = 'multi-class-classification-and-neural-networks';
-  conf$itemName = 'Multi-class Classification and Neural Networks';
-  conf$partArrays = c(
-    '1', 
-    'lrCostFunction.r' , 
-    'Regularized Logistic Regression', 
-    '2', 
-    'oneVsAll.r' , 
-    'One-vs-All Classifier Training', 
-    '3', 
-    'predictOneVsAll.r' , 
-    'One-vs-All Classifier Prediction', 
-    '4', 
-    'predict.r' , 
-    'Neural Network Prediction Function')
-  
-  conf$partArrays = matrix(conf$partArrays, ncol =  3 , byrow = T)
-  
-  conf$output = output;
-
-  submitWithConfiguration(conf);
+  function(theta) {
+    # Initialize some useful values
+    m <- length(y) # number of training examples
+    
+    # You need to return the following variables correctly
+    J <- 0
+    
+    # ----------------------- YOUR CODE HERE -----------------------
+    # Instructions: Compute the cost of a particular choice of theta.
+    #               You should set J to the cost.
+    #               Compute the partial derivatives and set grad to the partial
+    #               derivatives of the cost w.r.t. each parameter in theta
+    #
+    # Hint: The computation of the cost function and gradients can be
+    #       efficiently vectorized. For example, consider the computation
+    #
+    #           sigmoid(X %*% theta)
+    #
+    #       Each row of the resulting matrix will contain the value of the
+    #       prediction for that example. You can make use of this to vectorize
+    #       the cost function and gradient computations.
+    #
+    
+    # calculate cost function
+    h <- sigmoid(X %*% theta)
+    # calculate penalty
+    # excluded the first theta value
+    theta1 <- c(0,c(theta[-1]))
+    
+    p <- lambda * (t(theta1) %*% theta1) / (2 * m)
+    J <- -(t(y) %*% log(h) + t(1 - y) %*% log(1 - h)) / m + p
+    J
+    # --------------------------------------------------------------
+  }
 }
 
-output = function(partId, auxstring) {
-  source("lrCostFunction.r")
-  source("oneVsAll.r")
-  source("predictOneVsAll.r")
-  source("predict.r")
-  source("sigmoid.r")
-  # Random Test Cases
-  X = cbind(rep(1,20), exp(1) * sin(seq(1,20,1)), exp(0.5) * cos(seq(1,20,1)) )
-  y = (sin(X[,1]+X[,2]) > 0)
-  
-  Xm = c(-1, -1 , -1 ,-2 , -2, -1 , -2, -2 , 
-          1, 1 ,  1, 2 ,  2, 1 , 2, 2 , 
-         -1, 1 ,  -1, 2 ,  -2, 1 , -2, 2 , 
-          1, -1 , 1, -2 ,  -2, -1 , -2 ,-2 )
-  Xm = matrix(Xm,ncol = 2, byrow = T)
-  
-  ym = c(1, 1, 1 ,1, 2, 2, 2, 2, 3, 3, 3, 3, 4, 4 ,4, 4 )
-  t1 = sin(matrix(seq(1,24,2), 4, 3))
-  t2 = cos(matrix(seq(1,40,2), 4, 5))
-  theta = c(.25,.5,-.5)
-  
-  if (partId == '1'){
-    out = sprintf('%0.5f ', lrCostFunction(X, y, 0.1)(theta) )
-    out = paste0(c(out,sprintf('%0.5f ',lrGradFunction(X, y, 0.1)(theta))),collapse = '')
-  }else if (partId == '2')
-    out = paste0(sprintf('%0.5f ', oneVsAll(Xm, ym, 4, 0.1)), collapse = '')
-  else if (partId == '3')
-    out = paste0(sprintf('%0.5f ', predictOneVsAll(t1, Xm)), collapse = '')
-  else if (partId == '4')
-    out = paste0(sprintf('%0.5f ', predict(t1, t2, Xm)), collapse = '')
+lrGradFunction <- function(X, y, lambda) {
+  #lrGradFunction Compute  gradient for logistic regression with
+  #regularization
+  #   J <- lrGradFunction( X, y, lambda)(theta) computes the
+  #   gradient of the cost w.r.t. to the parameters.
+  function(theta) {
+    # Initialize some useful values
+    m <- length(y) # number of training examples
+    
+    # You need to return the following variables correctly
+    
+    grad <- matrix(0,length(theta))
+    
+    # ----------------------- YOUR CODE HERE -----------------------
+    # Instructions: set grad to the partial
+    #               derivatives of the cost w.r.t. each parameter in theta
+    #
+    # Hint: The computation of the cost function and gradients can be
+    #       efficiently vectorized. For example, consider the computation
+    #
+    #           sigmoid(X %*% theta)
+    #
+    #       Each row of the resulting matrix will contain the value of the
+    #       prediction for that example. You can make use of this to vectorize
+    #       the cost function and gradient computations.
+    #
+    # Hint: When computing the gradient of the regularized cost function,
+    #       there're many possible vectorized solutions, but one solution
+    #       looks like:
+    #           grad <- (unregularized gradient for logistic regression)
+    #           temp <- theta
+    #           temp(1) <- 0;   # because we don't add anything for j <- 0
+    #           grad <- grad + YOUR_CODE_HERE (using the temp variable)
+    #
+    
+    # calculate cost function
+    h <- sigmoid(X %*% theta)
+    # calculate penalty
+    # excluded the first theta value
+    theta1 <- c(0,c(theta[-1]))
+    
+    # calculate grads
+    grad <- (t(X) %*% (h - y) + lambda * theta1) / m
+    
+    grad
+    # --------------------------------------------------------------
+  }
 }

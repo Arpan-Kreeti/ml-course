@@ -3,14 +3,11 @@ lrCostFunction <- function(X, y, lambda) {
   #regularization
   #   J <- lrCostFunction(X, y, lambda)(theta) computes the cost of using
   #   theta as the parameter for regularized logistic regression.
-  
   function(theta) {
     # Initialize some useful values
     m <- length(y) # number of training examples
-    
     # You need to return the following variables correctly
     J <- 0
-    
     # ----------------------- YOUR CODE HERE -----------------------
     # Instructions: Compute the cost of a particular choice of theta.
     #               You should set J to the cost.
@@ -26,12 +23,21 @@ lrCostFunction <- function(X, y, lambda) {
     #       prediction for that example. You can make use of this to vectorize
     #       the cost function and gradient computations.
     #
-    
+    # Calculate hypothesis
+    h <- sigmoid(X %*% theta)
+    # excluded the first theta value
+    # c(theta[-1]) , removes the first theta value
+    # Makes a list of 0, theta values exlucing the first theta value
+    # theta1 <- c(0,c(theta[-1]))
+    # Regularization term, we ignore the first value of theta since we don't need to 
+    # regularize it (Note that you should not be regularizing theta zero which is used for the bias
+    # term.). Therefore we ignore first row by theta[-1]
+    p <- (lambda/2*m) * sum((theta[-1] ^ 2))
+    J <- (1/m) * ( -( t(y) %*% log(h) ) - ( t(1-y) %*% log(1-h) )  ) + p
     J
     # --------------------------------------------------------------
   }
 }
-
 lrGradFunction <- function(X, y, lambda) {
   #lrGradFunction Compute  gradient for logistic regression with
   #regularization
@@ -40,11 +46,8 @@ lrGradFunction <- function(X, y, lambda) {
   function(theta) {
     # Initialize some useful values
     m <- length(y) # number of training examples
-    
     # You need to return the following variables correctly
-    
     grad <- matrix(0,length(theta))
-    
     # ----------------------- YOUR CODE HERE -----------------------
     # Instructions: set grad to the partial
     #               derivatives of the cost w.r.t. each parameter in theta
@@ -66,8 +69,21 @@ lrGradFunction <- function(X, y, lambda) {
     #           temp(1) <- 0;   # because we don't add anything for j <- 0
     #           grad <- grad + YOUR_CODE_HERE (using the temp variable)
     #
+    # h <- sigmoid(X %*% theta)
+    # # calculate penalty
+    # # excluded the first theta value
+    # theta1 <- c(0,c(theta[-1]))
     
+    # # calculate grads
+    # grad <- (t(X) %*% (h - y) + lambda * theta1) / m
     
+    h <- sigmoid(X %*% theta)
+    
+    temp <- theta
+    temp(1) <- c(0,c(theta[-1])) # because we don't add anything for j <- 0
+    # Calculate hypothesis
+    
+    grad <- ((1/m) * t(X) %*% (h - y)) + (lambda/m) * temp
     
     grad
     # --------------------------------------------------------------

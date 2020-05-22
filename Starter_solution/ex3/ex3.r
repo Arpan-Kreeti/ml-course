@@ -38,17 +38,19 @@ num_labels <- 10          # 10 labels, from 1 to 10
 
 # Load Training Data
 cat(sprintf('Loading and Visualizing Data ...\n'))
-load('ex3data1.Rda') #data
-list2env(data,.GlobalEnv)
-rm(data)
+load('ex3data1.Rda') # Load data set of images in a varaible "data"
+list2env(data,.GlobalEnv) # Send all the values in the list data to a global environment variable x
+rm(data) # remove the data from memory (its now in x)
 
-m <- dim(X)[1]
+# Each images is a 20*20 = 400 cell matrix, we have 5000 images in the data set, each image is represented by these 400 columns, hence 5000*400
+
+m <- dim(X)[1] # Number of images
 
 # Randomly select 100 data points to display
-rand_indices <- sample(m)
-sel <- X[rand_indices[1:100], ]
+rand_indices <- sample(m)           # Out of 5000 images choose 100 random images
+sel <- X[rand_indices[1:100], ]     # Select these 100 images and keep them in X
 
-displayData(sel)
+displayData(sel) # display 100 randomly selected images
 
 cat(sprintf('Program paused. Press enter to continue.\n'))
 line <- readLines(con = stdin(),1)
